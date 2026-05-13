@@ -1,31 +1,73 @@
-import { FilterType } from '@/types/task';
+'use client';
 
-interface FilterBarProps {
-    currentFilter: FilterType;
-    onFilterChange: (filter: FilterType) => void;
+import { FilterType, Priority } from '@/types/task';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
 }
 
-export function FilterBar({ currentFilter, onFilterChange }: FilterBarProps) {
-    const filters: { label: string; value: FilterType }[] = [
-        { label: 'All', value: 'all' },
-        { label: 'Active', value: 'active' },
-        { label: 'Completed', value: 'completed' },
-    ];
+interface FilterBarProps {
+  currentFilter: FilterType;
+  onFilterChange: (filter: FilterType) => void;
+  priorityFilter: Priority | 'all';
+  onPriorityFilterChange: (priority: Priority | 'all') => void;
+}
 
-    return (
-        <div className="flex items-center gap-2 p-1.5 bg-card/40 backdrop-blur-md rounded-xl border border-border w-fit">
-            {filters.map((f) => (
-                <button
-                    key={f.value}
-                    onClick={() => onFilterChange(f.value)}
-                    className={`px-4 py-1.5 text-sm font-medium rounded-lg transition-all ${currentFilter === f.value
-                            ? 'bg-primary text-primary-foreground shadow-sm'
-                            : 'text-gray-400 hover:text-foreground hover:bg-white/5'
-                        }`}
-                >
-                    {f.label}
-                </button>
-            ))}
+export function FilterBar({ 
+  currentFilter, 
+  onFilterChange,
+  priorityFilter,
+  onPriorityFilterChange
+}: FilterBarProps) {
+  const statusFilters: { label: string; value: FilterType }[] = [
+    { label: 'All', value: 'all' },
+    { label: 'To Do', value: 'todo' },
+    { label: 'In Progress', value: 'in-progress' },
+    { label: 'Done', value: 'done' },
+  ];
+
+  const priorities: (Priority | 'all')[] = ['all', 'low', 'medium', 'high'];
+
+  return (
+    <div className="flex flex-wrap items-center gap-4 mb-8">
+      <div className="flex items-center gap-2 bg-muted/50 p-1 rounded-xl border">
+        {statusFilters.map((f) => (
+          <button
+            key={f.value}
+            onClick={() => onFilterChange(f.value)}
+            className={cn(
+              "px-4 py-1.5 text-xs font-bold uppercase tracking-wider rounded-lg transition-all",
+              currentFilter === f.value
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="flex items-center gap-2">
+        <span className="text-[10px] font-bold uppercase text-muted-foreground tracking-widest">Priority:</span>
+        <div className="flex gap-1">
+          {priorities.map((p) => (
+            <button
+              key={p}
+              onClick={() => onPriorityFilterChange(p)}
+              className={cn(
+                "px-3 py-1 text-[10px] font-bold uppercase rounded-lg border transition-all",
+                priorityFilter === p
+                  ? "bg-primary/10 border-primary text-primary"
+                  : "bg-background border-transparent text-muted-foreground hover:border-muted-foreground/30"
+              )}
+            >
+              {p}
+            </button>
+          ))}
         </div>
-    );
+      </div>
+    </div>
+  );
 }
