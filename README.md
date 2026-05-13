@@ -1,4 +1,13 @@
-# Task Master
+# 📋 Task Master
+
+<div align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=mayoka0&show_icons=true&theme=radical" alt="GitHub Stats" />
+</div>
+
+### 🛠️ Tech Stack & Skills
+<div align="center">
+  <img src="https://skillicons.dev/icons?i=nextjs,react,ts,tailwind,nodejs,git,vercel" alt="Skill Icons" />
+</div>
 
 A clean, modern, and production-ready task manager web application built to solve real-world productivity needs.
 
